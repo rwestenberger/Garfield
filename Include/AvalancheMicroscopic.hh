@@ -10,6 +10,7 @@
 
 #include "Sensor.hh"
 #include "ViewDrift.hh"
+#include "SaveDrift.hh"
 
 namespace Garfield {
 
@@ -32,6 +33,10 @@ class AvalancheMicroscopic {
   void DisableIonisationMarkers() { m_plotIonisations = false; }
   void EnableAttachmentMarkers() { m_plotAttachments = true; }
   void DisableAttachmentMarkers() { m_plotAttachments = false; }
+
+  // Switch on/off drift line saving
+  void EnableSaving(SaveDrift* save);
+  void DisableSaving();
 
   // Switch on/off calculation of induced currents
   void EnableSignalCalculation() { m_useSignal = true; }

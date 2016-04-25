@@ -19,6 +19,8 @@ AvalancheMicroscopic::AvalancheMicroscopic()
       m_nHoleEndpoints(0),
       m_usePlotting(false),
       m_viewer(NULL),
+      m_useSaving(false),
+      m_saver(NULL)
       m_plotExcitations(true),
       m_plotIonisations(true),
       m_plotAttachments(true),
@@ -108,6 +110,29 @@ void AvalancheMicroscopic::DisablePlotting() {
 
   m_viewer = NULL;
   m_usePlotting = false;
+}
+
+void AvalancheMicroscopic::EnableSaving(SaveDrift* save) {
+
+  if (!save) {
+    std::cerr << m_className << "::EnableSaving:\n";
+    std::cerr << "    Saver pointer is a null pointer.\n";
+    return;
+  }
+
+  m_saver = save;
+  m_useSaving = true;
+  if (!m_useDriftLines) {
+    std::cout << m_className << "::EnableSaving:\n";
+    std::cout << "    Enabling storage of drift line.\n";
+    EnableDriftLines();
+  }
+}
+
+void AvalancheMicroscopic::DisableSaving() {
+
+  m_saver = NULL;
+  m_useSaving = false;
 }
 
 void AvalancheMicroscopic::EnableElectronEnergyHistogramming(TH1* histo) {
@@ -1708,6 +1733,39 @@ bool AvalancheMicroscopic::TransportElectron(const double x0, const double y0,
     // Photons
     for (int i = m_nPhotons; i--;) {
       m_viewer->NewPhotonTrack(m_photons[i].x0, m_photons[i].y0, m_photons[i].z0,
+                             m_photons[i].x1, m_photons[i].y1, m_photons[i].z1);
+    }
+  }
+  // Save the drift paths and photon tracks.
+  if (m_useSaving) {
+    // Electrons
+    for (int i = m_nElectronEndpoints; i--;) {
+      const int np = GetNumberOfElectronDriftLinePoints(i);
+      int jL;
+      if (np <= 0) continue;
+      m_saver->NewElectronDriftLine(np, jL, m_endpointsElectrons[i].x0,
+                                   m_endpointsElectrons[i].y0,
+                                   m_endpointsElectrons[i].z0);
+      for (int jP = np; jP--;) {
+        GetElectronDriftLinePoint(x, y, z, t, jP, i);
+        m_saver->SetDriftLinePoint(jL, jP, x, y, z);
+      }
+    }
+    // Holes
+    for (int i = m_nHoleEndpoints; i--;) {
+      const int np = GetNumberOfHoleDriftLinePoints(i);
+      int jL;
+      if (np <= 0) continue;
+      m_saver->NewHoleDriftLine(np, jL, m_endpointsHoles[i].x0,
+                               m_endpointsHoles[i].y0, m_endpointsHoles[i].z0);
+      for (int jP = np; jP--;) {
+        GetHoleDriftLinePoint(x, y, z, t, jP, i);
+        m_saver->SetDriftLinePoint(jL, jP, x, y, z);
+      }
+    }
+    // Photons
+    for (int i = m_nPhotons; i--;) {
+      m_saver->NewPhotonTrack(m_photons[i].x0, m_photons[i].y0, m_photons[i].z0,
                              m_photons[i].x1, m_photons[i].y1, m_photons[i].z1);
     }
   }
