@@ -81,26 +81,26 @@ $(OBJDIR)/AvalancheMicroscopic.o: \
 	$(INCDIR)/AvalancheMicroscopic.hh \
 	$(INCDIR)/FundamentalConstants.hh $(INCDIR)/GarfieldConstants.hh \
 	$(INCDIR)/Random.hh \
-	$(INCDIR)/Sensor.hh $(INCDIR)/Medium.hh $(INCDIR)/ViewDrift.hh
+	$(INCDIR)/Sensor.hh $(INCDIR)/Medium.hh $(INCDIR)/ViewDrift.hh $(INCDIR)/SaveDrift.hh
 	@echo $@
 	@$(CXX) $(CFLAGS) $< -o $@
 $(OBJDIR)/AvalancheMC.o: \
 	$(SRCDIR)/AvalancheMC.cc $(INCDIR)/AvalancheMC.hh \
 	$(INCDIR)/FundamentalConstants.hh $(INCDIR)/GarfieldConstants.hh \
 	$(INCDIR)/Random.hh \
-	$(INCDIR)/Sensor.hh $(INCDIR)/Medium.hh $(INCDIR)/ViewDrift.hh
+	$(INCDIR)/Sensor.hh $(INCDIR)/Medium.hh $(INCDIR)/ViewDrift.hh $(INCDIR)/SaveDrift.hh
 	@echo $@
 	@$(CXX) $(CFLAGS) $< -o $@      
 $(OBJDIR)/DriftLineRKF.o: \
 	$(SRCDIR)/DriftLineRKF.cc $(INCDIR)/DriftLineRKF.hh \
 	$(INCDIR)/FundamentalConstants.hh \
-	$(INCDIR)/Sensor.hh $(INCDIR)/Medium.hh $(INCDIR)/ViewDrift.hh
+	$(INCDIR)/Sensor.hh $(INCDIR)/Medium.hh $(INCDIR)/ViewDrift.hh $(INCDIR)/SaveDrift.hh
 	@echo $@
 	@$(CXX) $(CFLAGS) $< -o $@
  
 $(OBJDIR)/Track.o: \
 	$(SRCDIR)/Track.cc $(INCDIR)/Track.hh \
-	$(INCDIR)/ViewDrift.hh
+	$(INCDIR)/ViewDrift.hh $(INCDIR)/SaveDrift.hh
 	@echo $@
 	@$(CXX) $(CFLAGS) $< -o $@        
 $(OBJDIR)/TrackBichsel.o: \
@@ -214,6 +214,7 @@ $(OBJDIR)/GeometryRoot.o: \
 $(OBJDIR)/ViewFEMesh.o: \
 	$(SRCDIR)/ViewFEMesh.cc $(INCDIR)/ViewFEMesh.hh \
 	$(SRCDIR)/ViewDrift.cc $(INCDIR)/ViewDrift.hh \
+	$(SRCDIR)/SaveDrift.cc $(INCDIR)/SaveDrift.hh \
 	$(INCDIR)/ComponentFieldMap.hh
 	@echo $@
 	@$(CXX) $(CFLAGS) $< -o $@
@@ -223,7 +224,13 @@ $(OBJDIR)/ViewField.o: \
 	@echo $@
 	@$(CXX) $(CFLAGS) $< -o $@
 $(OBJDIR)/ViewDrift.o: \
-	$(SRCDIR)/ViewDrift.cc $(INCDIR)/ViewDrift.hh
+	$(SRCDIR)/ViewDrift.cc $(INCDIR)/ViewDrift.hh \
+	$(SRCDIR)/SaveDrift.cc $(INCDIR)/SaveDrift.hh \
+	@echo $@
+	@$(CXX) $(CFLAGS) $< -o $@
+$(OBJDIR)/SaveDrift.o: \
+	$(SRCDIR)/SaveDrift.cc $(INCDIR)/SaveDrift.hh \
+	$(SRCDIR)/ViewDrift.cc $(INCDIR)/ViewDrift.hh \
 	@echo $@
 	@$(CXX) $(CFLAGS) $< -o $@
 $(OBJDIR)/ViewMedium.o: \
