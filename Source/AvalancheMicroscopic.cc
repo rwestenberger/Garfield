@@ -1745,29 +1745,18 @@ bool AvalancheMicroscopic::TransportElectron(const double x0, const double y0,
       if (np <= 0) continue;
       m_saver->NewElectronDriftLine(np, jL, m_endpointsElectrons[i].x0,
                                    m_endpointsElectrons[i].y0,
-                                   m_endpointsElectrons[i].z0);
+                                   m_endpointsElectrons[i].z0, m_endpointsElectrons[i].t0);
       for (int jP = np; jP--;) {
         GetElectronDriftLinePoint(x, y, z, t, jP, i);
-        m_saver->SetDriftLinePoint(jL, jP, x, y, z);
-      }
-    }
-    // Holes
-    for (int i = m_nHoleEndpoints; i--;) {
-      const int np = GetNumberOfHoleDriftLinePoints(i);
-      int jL;
-      if (np <= 0) continue;
-      m_saver->NewHoleDriftLine(np, jL, m_endpointsHoles[i].x0,
-                               m_endpointsHoles[i].y0, m_endpointsHoles[i].z0);
-      for (int jP = np; jP--;) {
-        GetHoleDriftLinePoint(x, y, z, t, jP, i);
-        m_saver->SetDriftLinePoint(jL, jP, x, y, z);
+        m_saver->SetDriftLinePoint(jL, jP, x, y, z, t);
       }
     }
     // Photons
     for (int i = m_nPhotons; i--;) {
-      m_saver->NewPhotonTrack(m_photons[i].x0, m_photons[i].y0, m_photons[i].z0,
-                             m_photons[i].x1, m_photons[i].y1, m_photons[i].z1);
+      m_saver->NewPhotonTrack(m_photons[i].x0, m_photons[i].y0, m_photons[i].z0, , m_endpointsElectrons[i].t0,
+                             m_photons[i].x1, m_photons[i].y1, m_photons[i].z1, m_endpointsElectrons[i].t1);
     }
+    m_saver->FillEvent();
   }
   return true;
 }
