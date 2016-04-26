@@ -225,12 +225,12 @@ $(OBJDIR)/ViewField.o: \
 	@$(CXX) $(CFLAGS) $< -o $@
 $(OBJDIR)/ViewDrift.o: \
 	$(SRCDIR)/ViewDrift.cc $(INCDIR)/ViewDrift.hh \
-	$(SRCDIR)/SaveDrift.cc $(INCDIR)/SaveDrift.hh \
+	$(SRCDIR)/SaveDrift.cc $(INCDIR)/SaveDrift.hh
 	@echo $@
 	@$(CXX) $(CFLAGS) $< -o $@
 $(OBJDIR)/SaveDrift.o: \
 	$(SRCDIR)/SaveDrift.cc $(INCDIR)/SaveDrift.hh \
-	$(SRCDIR)/ViewDrift.cc $(INCDIR)/ViewDrift.hh \
+	$(SRCDIR)/ViewDrift.cc $(INCDIR)/ViewDrift.hh
 	@echo $@
 	@$(CXX) $(CFLAGS) $< -o $@
 $(OBJDIR)/ViewMedium.o: \

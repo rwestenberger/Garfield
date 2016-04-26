@@ -2,8 +2,11 @@
 #define G_SAVE_DRIFT
 
 #include <string>
+#include <vector>
 #include <TFile.h>
 #include <TTree.h>
+
+using namespace std;
 
 namespace Garfield {
 
@@ -11,7 +14,7 @@ class SaveDrift {
 
  public:
   // Constructor
-  SaveDrift();
+  SaveDrift(TString outputFilePath);
   // Destructor
   ~SaveDrift();
 
@@ -19,7 +22,7 @@ class SaveDrift {
   void FillEvent();
 
   // Functions to be used by transport classes.
-  void NewElectronDriftLine(const unsigned int np, int& id, const double x0, const double y0, const double z0, const double t0);
+  void NewElectronDriftLine(const unsigned int np, int& id);
   void NewPhotonTrack(const double x0, const double y0, const double z0, const double t0, const double x1, const double y1, const double z1, const double t1);
 
   void SetDriftLinePoint(const unsigned int iL, const unsigned int iP, const double x, const double y, const double z, const double t);
@@ -40,12 +43,14 @@ class SaveDrift {
 
   Int_t e_driftLine_id;
 
-  vector< vector<Double_t> > x_e;
-  vector< vector<Double_t> > y_e;
-  vector< vector<Double_t> > z_e;
-  vector< vector<Double_t> > x_p;
-  vector< vector<Double_t> > y_p;
-  vector< vector<Double_t> > z_p;
+  std::vector< std::vector<Double_t> > x_e;
+  std::vector< std::vector<Double_t> > y_e;
+  std::vector< std::vector<Double_t> > z_e;
+  std::vector< std::vector<Double_t> > t_e;
+  std::vector< std::vector<Double_t> > x_p;
+  std::vector< std::vector<Double_t> > y_p;
+  std::vector< std::vector<Double_t> > z_p;
+  std::vector< std::vector<Double_t> > t_p;
 };
 }
 #endif

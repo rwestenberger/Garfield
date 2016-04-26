@@ -230,6 +230,8 @@ class AvalancheMicroscopic {
 
   bool m_usePlotting;
   ViewDrift* m_viewer;
+  bool m_useSaving;
+  SaveDrift* m_saver;
   bool m_plotExcitations;
   bool m_plotIonisations;
   bool m_plotAttachments;
