@@ -1739,13 +1739,14 @@ bool AvalancheMicroscopic::TransportElectron(const double x0, const double y0,
   // Save the drift paths and photon tracks.
   if (m_useSaving) {
     // Electrons
+    int skippingFactor = 100;
     for (int i = m_nElectronEndpoints; i--;) {
-      const int np = GetNumberOfElectronDriftLinePoints(i);
+      const int np = GetNumberOfElectronDriftLinePoints(i)/skippingFactor;
       int jL;
       if (np <= 0) continue;
       m_saver->NewElectronDriftLine(np, jL);
       for (int jP = np; jP--;) {
-        GetElectronDriftLinePoint(x, y, z, t, jP, i);
+        GetElectronDriftLinePoint(x, y, z, t, jP*skippingFactor, i);
         m_saver->SetDriftLinePoint(jL, jP, x, y, z, t);
       }
     }
