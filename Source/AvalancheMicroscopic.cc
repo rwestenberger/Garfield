@@ -1739,13 +1739,20 @@ bool AvalancheMicroscopic::TransportElectron(const double x0, const double y0,
   // Save the drift paths and photon tracks.
   if (m_useSaving) {
     // Electrons
-    int skippingFactor = 100;
-    for (int i = m_nElectronEndpoints; i--;) {
-      const int np = GetNumberOfElectronDriftLinePoints(i)/skippingFactor;
-      int jL;
+    int skippingFactor = 1000;
+    for (int i=m_nElectronEndpoints; i--;) {
+      const int np = (GetNumberOfElectronDriftLinePoints(i)-2)/skippingFactor + 2; // save start and ending point for sure
       if (np <= 0) continue;
+      int jL;
       m_saver->NewElectronDriftLine(np, jL);
-      for (int jP = np; jP--;) {
+
+      // save start and end point
+      GetElectronDriftLinePoint(x, y, z, t, 0, i);
+      m_saver->SetDriftLinePoint(jL, 0, x, y, z, t);
+      GetElectronDriftLinePoint(x, y, z, t, GetNumberOfElectronDriftLinePoints(i)-1, i);
+      m_saver->SetDriftLinePoint(jL, np-1, x, y, z, t);
+
+      for (int jP=np-1; jP>=0; jP--) {
         GetElectronDriftLinePoint(x, y, z, t, jP*skippingFactor, i);
         m_saver->SetDriftLinePoint(jL, jP, x, y, z, t);
       }
@@ -1756,6 +1763,7 @@ bool AvalancheMicroscopic::TransportElectron(const double x0, const double y0,
                              m_photons[i].x1, m_photons[i].y1, m_photons[i].z1, m_endpointsElectrons[i].t);
     }
     m_saver->FillEvent();
+    m_saver->Clear();
   }
   return true;
 }

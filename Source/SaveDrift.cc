@@ -30,6 +30,7 @@ SaveDrift::~SaveDrift() {
 void SaveDrift::Clear() {
   x_e.clear(); y_e.clear(); z_e.clear(); t_e.clear();
   x_p.clear(); y_p.clear(); z_p.clear(); t_p.clear();
+  e_driftLine_id = 0;
 }
 
 void SaveDrift::FillEvent() {
@@ -71,7 +72,7 @@ void SaveDrift::NewPhotonTrack(const double x0, const double y0, const double z0
 void SaveDrift::SetDriftLinePoint(const unsigned int iL, const unsigned int iP, const double x, const double y, const double z, const double t) {
   if (iL >= x_e.size()) {
     std::cerr << m_className << "::SetDriftLinePoint:\n";
-    std::cerr << "    Drift line index " << iL << " is out of range.\n";
+    std::cerr << "    Drift line index " << iL << " for point " << iP << " is out of range.\n";
     return;
   }
   x_e.at(iL).at(iP) = x;
