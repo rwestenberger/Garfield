@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "ComponentBase.hh"
+#include "ComponentVoxel.hh"
 
 namespace Garfield {
 
@@ -18,7 +19,7 @@ class Sensor {
   ~Sensor() {}
 
   // Add a component
-  void AddComponent(ComponentBase* comp);
+  void AddComponent(ComponentVoxel* comp);
   int GetNumberOfComponents() { return m_nComponents; }
   // Add an electrode
   void AddElectrode(ComponentBase* comp, std::string label);
@@ -114,7 +115,7 @@ class Sensor {
   // Components
   int m_nComponents;
   struct component {
-    ComponentBase* comp;
+    ComponentVoxel* comp;
   };
   std::vector<component> m_components;
   int m_lastComponent;

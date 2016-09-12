@@ -300,7 +300,7 @@ bool Sensor::IsInTrapRadius(const double q0, const double x0,
   return false;
 }
 
-void Sensor::AddComponent(ComponentBase* comp) {
+void Sensor::AddComponent(ComponentVoxel* comp) {
 
   if (!comp) {
     std::cerr << m_className << "::AddComponent:\n";
